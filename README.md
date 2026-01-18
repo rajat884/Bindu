@@ -409,7 +409,7 @@ Configure PostgreSQL connection via environment variables:
 
 ```bash
 STORAGE_TYPE=postgres
-DATABASE_URL=postgresql+asyncpg://bindu:bindu@localhost:5432/bindu
+DATABASE_URL=postgresql+asyncpg://<username>:<password>@localhost:5432/bindu
 ```
 
 Then use the simplified config:
