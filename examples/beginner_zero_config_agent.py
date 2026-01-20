@@ -10,10 +10,15 @@ Purpose:
 from bindu.penguin.bindufy import bindufy
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
+import os
 
 agent = Agent(
     instructions="You are a friendly assistant that explains things simply.",
-    model=OpenAIChat(id="gpt-4o-mini"),
+    model = OpenAIChat(
+    id="grok-beta",
+    api_key=os.getenv("GROK_API_KEY"),
+    base_url="https://api.x.ai/v1"
+)
 )
 
 config = {
