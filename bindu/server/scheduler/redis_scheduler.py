@@ -38,7 +38,7 @@ class RedisScheduler(Scheduler):
         queue_name: str = "bindu:tasks",
         max_connections: int = 10,
         retry_on_timeout: bool = True,
-        poll_timeout: int = 30,
+        poll_timeout: int = 1,
     ):
         """Initialize Redis scheduler.
 
@@ -47,7 +47,7 @@ class RedisScheduler(Scheduler):
             queue_name: Redis queue name for task operations
             max_connections: Maximum Redis connection pool size
             retry_on_timeout: Whether to retry on Redis timeout
-            poll_timeout: Timeout in seconds for blpop operations (default: 30s)
+            poll_timeout: Timeout in seconds for blpop operations (default: 1s)
                 Higher values reduce API calls but slightly increase task start latency.
         """
         self.redis_url = redis_url

@@ -3,7 +3,7 @@
 This module defines the configuration settings for the application using pydantic models.
 """
 
-from pydantic import Field, computed_field, validator, BaseModel, HttpUrl
+from pydantic import Field, computed_field, BaseModel, HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import AliasChoices
 from typing import Literal, Optional
@@ -693,7 +693,7 @@ class SchedulerSettings(BaseSettings):
     max_connections: int = 10  # Connection pool setting
     retry_on_timeout: bool = True  # Retry behavior setting
     poll_timeout: int = Field(
-        default=3600,
+        default=1,
         validation_alias=AliasChoices("poll_timeout", "REDIS_POLL_TIMEOUT"),
         description="Timeout in seconds for Redis blpop operations. Higher values reduce API calls but increase task start latency.",
     )

@@ -74,7 +74,7 @@ class SchedulerConfig:
     queue_name: str = "bindu:tasks"
     max_connections: int = 10
     retry_on_timeout: bool = True
-    poll_timeout: int = 30
+    poll_timeout: int = 1
 
 
 @dataclass(frozen=True)
