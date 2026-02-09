@@ -94,17 +94,18 @@ class Tunnel:
         # Parse server address
         server_host, server_port = self.config.server_address.split(":")
         
-        # Build command
+        # Build command - use separate flags for server host and port
         command = [
             str(self._binary_path),
             self.config.protocol,
-            "-n", self.config.subdomain or "random",
+            "-n", "bindu-tunnel",
             "-l", str(self.config.local_port),
             "-i", self.config.local_host,
             "--uc",  # Use compression
             "--sd", self.config.subdomain or "random",
             "--ue",  # Use encryption
-            "--server_addr", f"{server_host}:{server_port}",
+            "-s", server_host,
+            "-P", server_port,
             "--disable_log_color",
         ]
         
@@ -181,8 +182,9 @@ class Tunnel:
                     logger.debug(f"FRP: {line}")
                 
                 # Look for success message
-                # FRP output format: "start proxy success: http://subdomain.domain.com"
+                # FRP output format: "start proxy success" (URL may or may not be included)
                 if "start proxy success" in line:
+                    # Try to extract URL from line if present
                     match = re.search(r"start proxy success:\s*(.+)", line)
                     if match:
                         url = match.group(1).strip()
@@ -193,7 +195,9 @@ class Tunnel:
                             if subdomain_match:
                                 self.config.subdomain = subdomain_match.group(1)
                     else:
-                        raise_tunnel_error()
+                        # URL not in output, construct it from config
+                        url = self.config.get_public_url()
+                        logger.info(f"Tunnel started successfully, constructed URL: {url}")
                 
                 # Check for login failure
                 elif "login to server failed" in line or "error" in line.lower():

@@ -406,6 +406,12 @@ def bindufy(
             # Update manifest URL to use tunnel URL
             _manifest.url = tunnel_url
             
+            # Update BinduApplication URL to use tunnel URL
+            bindu_app.url = tunnel_url
+            
+            # Invalidate cached agent card so it gets regenerated with new URL
+            bindu_app._agent_card_json_schema = None
+            
         except Exception as e:
             logger.error(f"Failed to create tunnel: {e}")
             logger.warning("Continuing with local-only server...")

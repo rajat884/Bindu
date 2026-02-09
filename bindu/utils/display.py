@@ -137,20 +137,16 @@ def prepare_server_display(
         
         console.print(Text("Protocol Endpoints:", style="bold white"), highlight=False)
         console.print(
-            Text(f"  - A2A: {base_url}/a2a", style="white"), highlight=False
+            Text(f"  - Agent Endpoint: {base_url}/", style="white"), highlight=False
+        )
+        console.print(
+            Text(f"  - Agent Card: {base_url}/.well-known/agent.json", style="white"),
+            highlight=False,
         )
         console.print(
             Text(
                 f"  - DID Resolution: {base_url}/did/resolve", style="white"
             ),
-            highlight=False,
-        )
-        console.print(
-            Text(f"  - Agent Info: {base_url}/agent/info", style="white"),
-            highlight=False,
-        )
-        console.print(
-            Text(f"  - Docs: {base_url}/docs", style="white"),
             highlight=False,
         )
         console.print()

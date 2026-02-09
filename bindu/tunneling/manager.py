@@ -86,6 +86,44 @@ class TunnelManager:
         return None
     
     @staticmethod
+    def _generate_subdomain_from_did(agent_did: str) -> str:
+        """Generate a subdomain from agent DID.
+        
+        Converts DID to a DNS-safe subdomain by:
+        - Removing 'did:' prefix
+        - Replacing colons with hyphens
+        - Converting to lowercase
+        - Truncating if too long (max 63 chars for DNS)
+        
+        Args:
+            agent_did: Agent DID (e.g., did:bindu:user:agent:id)
+            
+        Returns:
+            DNS-safe subdomain string
+        """
+        # Remove 'did:' prefix and replace colons with hyphens
+        subdomain = agent_did.replace("did:", "").replace(":", "-").lower()
+        
+        # Replace underscores and other special chars with hyphens
+        subdomain = subdomain.replace("_", "-").replace("@", "-at-").replace(".", "-")
+        
+        # Remove any characters that aren't alphanumeric or hyphens
+        subdomain = ''.join(c if c.isalnum() or c == '-' else '' for c in subdomain)
+        
+        # Ensure it starts with a letter (DNS requirement)
+        if subdomain and not subdomain[0].isalpha():
+            subdomain = 'a' + subdomain
+        
+        # Truncate to 63 characters (DNS label limit)
+        if len(subdomain) > 63:
+            subdomain = subdomain[:63]
+        
+        # Remove trailing hyphens
+        subdomain = subdomain.rstrip('-')
+        
+        return subdomain or "agent"  # Fallback if empty
+    
+    @staticmethod
     def _generate_subdomain(length: int = 12) -> str:
         """Generate a random subdomain.
         
